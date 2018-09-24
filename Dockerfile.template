@@ -12,9 +12,6 @@ RUN apt-get update && apt-get install -yq \
    libsm6 libxext6 && \
    apt-get clean && rm -rf /var/lib/apt/lists/*
 
-RUN ls /usr/src/app
-RUN cd pyboson && python3 ./setup.py build && cp -R build/lib/pyboson ../src/
-
 # Set our working directory
 WORKDIR /usr/src/app
 
@@ -27,6 +24,10 @@ RUN pip install -r /requirements.txt
 # This will copy all files in our root to the working  directory in the container
 # (except files ignored by .dockerignore)
 COPY . ./
+
+# build pyboson on target
+RUN ls /usr/src/app
+RUN cd pyboson && python3 ./setup.py build && cp -R build/lib/pyboson ../src/
 
 # switch on systemd init system in container
 ENV INITSYSTEM on
