@@ -1,1 +1,6 @@
-Flask==0.10.1
+numpy==1.15.0
+opencv-python==3.4.2.17
+pyyaml==3.13
+twisted==18.7.0
+setuptools==39.2.0
+

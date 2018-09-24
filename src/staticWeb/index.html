@@ -1,0 +1,30 @@
+<html>
+  <head>
+    <title></title>
+    <script src="/js/jquery.min.js"></script>
+  </head>
+
+  <body>
+    <br />
+    <br />
+    <div align="center">
+      <table border="0">
+        <tr><td colspan="2" align="right"><img src="logo.png" /></td></tr>
+        <tr>
+          <td>
+            <img width="640" height="512" id="boson_image" src="/boson/latest.png" />
+            <br />
+            <small style="font-family: Arial; font-weight: bold">Flir Boson</small>
+          </td>
+        </tr>
+      </table>
+    </div>
+    <script type="text/javascript">
+      setInterval(function(){
+        $("#boson_image").attr("src", "/boson/latest.png?"+new Date().getTime());
+      }, 100);
+    </script>
+  </body>
+</html>
+
+  

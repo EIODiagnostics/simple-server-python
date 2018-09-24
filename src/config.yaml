@@ -1,0 +1,14 @@
+log-level: debug
+#log-file: /home/cspencer/git/boson-capture/logs/boson-capture.log
+
+http-enable: 1
+http-root: staticWeb
+http-port: 80
+
+boson-enable: 1
+boson-fpm-threshold: 100000
+boson-pause: 0.1
+boson-save-images-locally: 0
+boson-save-path: images/boson
+boson-device: /dev/video0
+boson-preview: 0
