@@ -12,7 +12,7 @@ RUN apt-get update && apt-get install -yq \
    libsm6 libxext6 && \
    apt-get clean && rm -rf /var/lib/apt/lists/*
 
-RUN ls
+RUN ls /usr/src/app
 RUN cd pyboson && python3 ./setup.py build && cp -R build/lib/pyboson ../src/
 
 # Set our working directory
