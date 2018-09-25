@@ -116,7 +116,9 @@ else:
     # Attempt to load the boson_stream shared library, which will give us access
     # to the Boson's image stream.  An OSError except will be raised if we're
     # not able to locate the library.
-    boson_stream_lib = cdll.LoadLibrary("libboson_stream.so")
+    dll_name = "libboson_stream.so"
+    dll_path = os.path.abspath(os.path.join(os.path.dirname(__file__), dll_name))
+    boson_stream_lib = cdll.LoadLibrary(dll_path)
 
 
 
