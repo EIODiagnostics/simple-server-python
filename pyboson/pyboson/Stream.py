@@ -8,6 +8,9 @@ import time
 import sys
 import cv2
 
+__location__ = os.path.realpath(
+    os.path.join(os.getcwd(), os.path.dirname(__file__)))
+
 class BOSON_RESULT(Enum):
   BOSON_SUCCESS               = 0
   BOSON_ERROR_INVALID_DEVICE  = -1
@@ -117,7 +120,7 @@ else:
     # to the Boson's image stream.  An OSError except will be raised if we're
     # not able to locate the library.
     dll_name = "libboson_stream.so"
-    dll_path = os.path.abspath(os.path.join(os.path.dirname(__file__), dll_name))
+    dll_path = os.path.join(__location__, dll_name)
     boson_stream_lib = cdll.LoadLibrary(dll_path)
 
 
