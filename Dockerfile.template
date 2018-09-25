@@ -47,7 +47,7 @@ RUN mv libboson_sdk.so libboson_stream.so src/pyboson && \
     rm -rf pyboson 
 
 # clean up
-RUN rm README.md requirements.md
+RUN rm README.md requirements.txt
 
 # switch on systemd init system in container
 ENV INITSYSTEM on
