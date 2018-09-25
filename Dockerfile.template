@@ -42,10 +42,9 @@ RUN cd libboson_stream && make && cp libboson_stream.so .. && \
 
 # build pyboson on target
 RUN cd pyboson && python3 ./setup.py build && \
-    cp -R build/lib/pyboson ../src/tmp-pyboson 
-RUN mv ../libboson_sdk.so ../libboson_stream.so ../src/tmp-pyboson && \
+    cp -R build/lib/pyboson ../src/pyboson 
+RUN mv libboson_sdk.so libboson_stream.so src/pyboson && \
     rm -rf pyboson 
-RUN mv ../src/tmp-pyboson ../src/pyboson
 
 # clean up
 RUN rm README.md requirements.md
