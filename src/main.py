@@ -28,7 +28,7 @@ from pyboson.Boson import Boson
 __location__ = os.path.realpath(
     os.path.join(os.getcwd(), os.path.dirname(__file__)))
 
-libboson_stream = cdll.LoadLibrary(os.path.join(__location__, "pyboson", "libboson_stream.so")
+libboson_stream = cdll.LoadLibrary(os.path.join(__location__, "pyboson", "libboson_stream.so"))
 
 class Settings:
     def __init__(self):
