@@ -27,19 +27,26 @@ COPY . ./
 
 # build libboson_sdk
 RUN apt-get update && apt-get install -yq \
-   libusb-1.0-0-dev python-opencv && \
-   apt-get clean && rm -rf /var/lib/apt/lists/*
+    libusb-1.0-0-dev python-opencv && \
+    apt-get clean && rm -rf /var/lib/apt/lists/*
 
 RUN cd libboson_sdk && make && cp libboson_sdk.so ../src
 
 # build libboson_stream
 RUN apt-get update && apt-get install -yq \
-   libusb-1.0-0-dev && \
-   apt-get clean && rm -rf /var/lib/apt/lists/*
+    libusb-1.0-0-dev && \
+    apt-get clean && rm -rf /var/lib/apt/lists/*
 RUN cd libboson_stream && make && cp libboson_stream.so ../src
 
 # build pyboson on target
-RUN cd pyboson && python3 ./setup.py build && cp -R build/lib/pyboson ../src/
+RUN cd pyboson && python3 ./setup.py build && \
+    cp -R build/lib/pyboson ../src/tmp-pyboson && \
+    mv ../libboson*.so tmp-pyboson && \
+    rm -rf pyboson && \
+    mv tmp-pyboson pyboson
+
+# clean up
+RUN rm -rf README.md requirements.md libboson_sdk libboson_stream
 
 # switch on systemd init system in container
 ENV INITSYSTEM on
