@@ -28,6 +28,8 @@ from pyboson.Boson import Boson
 __location__ = os.path.realpath(
     os.path.join(os.getcwd(), os.path.dirname(__file__)))
 
+libboson_stream = cdll.LoadLibrary(os.path.join(__location__, "pyboson", "libboson_stream.so")
+
 class Settings:
     def __init__(self):
         self.fpm_start = None
@@ -278,6 +280,7 @@ class BosonMonitorThread(threading.Thread):
 def BosonCallback(width, height, length, frame):
     logger = logging.getLogger(__name__)
 
+    global libboson_stream
     global settings
     with settings.bufferLock:
         if settings.frame_count > (settings.bufferLength + settings.last_frame_sent):
@@ -291,8 +294,7 @@ def BosonCallback(width, height, length, frame):
     # now the 8 bit data
     data_8bit = np.zeros(((width * height), 1), dtype=np.uint8)
 
-    lib = cdll.LoadLibrary("libboson_stream.so")
-    lib.boson_linear_agc(image_raw, c_void_p(data_8bit.ctypes.data), width, height);
+    libboson_stream.boson_linear_agc(image_raw, c_void_p(data_8bit.ctypes.data), width, height);
 
     data_8bit = np.reshape(data_8bit, (height, width));
     (retval, image_8bit) = cv2.imencode(".png", data_8bit)
