@@ -53,4 +53,5 @@ RUN rm README.md requirements.txt
 ENV INITSYSTEM on
 
 # main.py will run when container starts up on the device
+# -u flag sets unbuffered stdout and stderr
 CMD ["python3","-u","src/main.py"]
