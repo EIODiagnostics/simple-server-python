@@ -192,7 +192,6 @@ def BosonCallback(width, height, length, frame):
         settings.rawBuffer[settings.bufferIndex] = image_raw
         settings.pngBuffer[settings.bufferIndex] = image_8bit
 
-
     if settings.boson_save_images_locally:
         timestamp = datetime.now()
         epoch_timestamp = str(int(round(time.time() * 1000)))
@@ -210,8 +209,6 @@ def BosonCallback(width, height, length, frame):
         file = open(image_path, "wb")
         file.write(image_raw)
         file.close()
-#    else:
-#        logger.debug("not writting raw image data")
 
     if settings.boson_preview:
         image_8bit_path = settings.boson_path + "/" + "latest.png"
@@ -219,8 +216,6 @@ def BosonCallback(width, height, length, frame):
         file = open(image_8bit_path, "wb")
         file.write(image_8bit)
         file.close()
-#    else:
-#        logger.debug("not writting preview image data")
 
 class BosonThread (threading.Thread):
     def __init__(self, path="", pause=0.0, device="/dev/device0", flip_vertical=True):
