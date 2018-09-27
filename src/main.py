@@ -127,122 +127,6 @@ class DelayedResource(Resource):
                     b"<title></title></head><body>request not supported</body></html>")
 
 
-
-# class CustomHttpHandler(http.server.SimpleHTTPRequestHandler):
-#     def __init__(self, request, client_address, server):
-#         self.logger = logging.getLogger(__name__)
-#         self.server = server
-#         self.protocol_version = 'HTTP/1.1'
-#         self.logger.debug("CustomHttpHandler: Received connection from " + str(client_address[0]) + ", request " + str(request))
-#         http.server.SimpleHTTPRequestHandler.__init__(self, request, client_address, server)
-
-#     def do_HEAD(self):
-#         self.send_response(200)
-#         self.send_header('Content-type', 'text/html')
-#         self.end_headers()
-
-#     def do_AUTHHEAD(self, message = ''):
-#         self.send_response(401)
-#         self.send_header('WWW-Authenticate', message)
-#         self.send_header('Content-type', 'text/html')
-#         self.send_header('Content-Length','0')
-#         self.end_headers()
-
-#     def do_GET(self):
-#         self.logger.debug("CustomHttpHandler: do_GET " + self.path)
-
-#         global settings
-
-#         if "latest.png" in self.path:
-#             self.logger.debug("CustomHttpHandler: do_GET PNG")
-#             with settings.bufferLock:
-#                 image = settings.pngBuffer[settings.bufferIndex]
-#             if image is None:
-#                 self.send_response(404)
-#                 self.send_header('Content-Length', 0)
-#                 self.end_headers()
-#                 return
-#             else:
-#                 self.send_response(200)
-#                 self.send_header('Content-type', 'image/png')
-#                 self.send_header('Content-Length', len(image))
-#                 self.send_header('Content-frame-count', str(settings.frame_count))
-#                 self.end_headers()
-#                 self.wfile.write(image)
-#                 return
-
-#         elif "latest.raw" in self.path:
-#             self.logger.debug("CustomHttpHandler: do_GET RAW")
-#             with settings.bufferLock:
-#                 image = settings.rawBuffer[settings.bufferIndex]
-#             if image is None:
-#                 self.send_response(404)
-#                 self.send_header('Content-Length', 0)
-#                 self.end_headers()
-#                 return
-#             else:
-#                 self.send_response(200)
-#                 self.send_header('Content-type', 'application/octet-stream')
-#                 self.send_header('Content-Length', len(image))
-#                 self.send_header('Content-frame-count', str(settings.frame_count))
-#                 self.end_headers()
-#                 self.wfile.write(image)
-#                 return
-
-#         # just for testing/development
-#         elif '?' in self.path:
-#             with settings.bufferLock:
-#                 settings.frame_count += 1
-#                 responseStr = self.path + " frame_count = " + str(settings.frame_count) + ", bufferIndex = " + str(settings.bufferIndex)
-#             self.logger.debug(responseStr)
-
-#             responseUtf8 = responseStr.encode("utf-8")
-
-#             self.path = self.path.split('?')[0]
-#             self.send_response(200)
-#             self.send_header('Content-Length', len(responseUtf8))
-#             self.end_headers()
-#             self.wfile.write(responseUtf8)
-#             return
-
-#         else:
-#             http.server.SimpleHTTPRequestHandler.do_GET(self)
-
-# class HTTPServerThread (threading.Thread):
-#     def __init__(self, path = None, port = 8080):
-#         threading.Thread.__init__(self)
-#         self.logger = logging.getLogger(__name__)
-#         self.name   = "http-server"
-#         self.path   = path
-#         self.port   = port
-#         self.timeout = 0.5 # seconds
-
-#     def run(self):
-#         try:
-#             # If we had a path supplied to the constructor, then switch to it
-#             # prior to starting up the HTTP server.
-#             if self.path is not None:
-#                 self.logger.info("Serving from path: " + self.path)
-#                 os.chdir(self.path)
-#         except:
-#             # We were unable to switch to the provided path, likely because it
-#             # didn't exist or we did not have sufficient permisions.
-#             self.logger.error("Error: unable to switch to provided path: " + self.path)
-#             self.logger.error("Error: HTTPServerThread could not start, exiting")
-#             return
-
-#         # Start up the HTTP server.
-#         self.logger.debug("Starting the HTTP server thread on port " + str(self.port) + " in directory " + os.getcwd())
-
-#         socketserver.TCPServer.allow_reuse_address = True
-
-#         self.handler = CustomHttpHandler
-#         self.server  = socketserver.TCPServer(("", self.port), self.handler)
-#         self.server.serve_forever()
-
-#     def shutdown(self):
-#         self.server.shutdown()
-
 class BosonMonitorThread(threading.Thread):
     def __init__(self, fpm_threshold = 0):
         threading.Thread.__init__(self)
@@ -283,6 +167,7 @@ def BosonCallback(width, height, length, frame):
     global libboson_stream
     global settings
     with settings.bufferLock:
+        settings.fpm_count += 1
         if settings.frame_count > (settings.bufferLength + settings.last_frame_sent):
             logger.debug("dropping frame")
             return
@@ -302,7 +187,6 @@ def BosonCallback(width, height, length, frame):
     # save image into memory buffer
     with settings.bufferLock:
         settings.frame_count += 1
-        settings.fpm_count += 1
         logger.debug("frame " + str(settings.frame_count))
         settings.bufferIndex = settings.frame_count % settings.bufferLength
         settings.rawBuffer[settings.bufferIndex] = image_raw
