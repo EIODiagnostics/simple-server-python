@@ -7,7 +7,7 @@ http-port: 80
 
 boson-enable: 1
 boson-fpm-threshold: 100000
-boson-pause: 0.01
+boson-pause: 0.1
 boson-save-images-locally: 0
 boson-save-path: images/boson
 boson-device: /dev/video0
