@@ -1,4 +1,4 @@
-log-level: debug
+log-level: info
 #log-file: /home/cspencer/git/boson-capture/logs/boson-capture.log
 
 http-enable: 1
