@@ -10,5 +10,5 @@ boson-fpm-threshold: 100000
 boson-pause: 0.1
 boson-save-images-locally: 0
 boson-save-path: images/boson
-boson-device: /dev/video0
+boson-device: /dev/video_boson
 boson-preview: 0
