@@ -148,15 +148,15 @@ class BosonMonitorThread(threading.Thread):
         while not self.stop:
             now = datetime.now()
 
-            # Keep track of our frames per minute info.
-            # Boson camera.
+            # output frame rate once a minute
             if ((now - settings.fpm_start).seconds >= 60):
                 with settings.bufferLock:
                    fpm_count = settings.fpm_count
+                   frame_count = settings.frame_count
                    settings.fpm_count = 0
+                   settings.fpm_start = now
 
-                self.logger.info("Boson frames per minute: " + str(fpm_count))
-                settings.fpm_start = now
+                self.logger.info("Boson %d frames per minute; frame count %d", fpm_count, frame_count)
 
             time.sleep(1)
 
