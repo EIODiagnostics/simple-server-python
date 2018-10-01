@@ -39,7 +39,7 @@ class Settings:
         self.bufferLength = 1
         self.bufferIndex = 0
         # TODO: replace this with preallocation of correct image frame size
-        # however these None's are used by the DelayedResource handler for the website
+        # however these None's are used by the DelayedResource handler for serving images
         self.rawBuffer = [None] * self.bufferLength
         self.pngBuffer = [None] * self.bufferLength
         self.bufferLock = threading.RLock()
@@ -61,6 +61,7 @@ class DelayedResource(Resource):
         try:  
             with settings.bufferLock:
                 image = settings.pngBuffer[settings.bufferIndex]
+                settings.pngBuffer[settings.bufferIndex] = None
                 frame_count = settings.frame_count
                 settings.last_frame_sent = frame_count
             if image is None:
@@ -86,6 +87,7 @@ class DelayedResource(Resource):
         try:  
             with settings.bufferLock:
                 image = settings.rawBuffer[settings.bufferIndex]
+                settings.rawBuffer[settings.bufferIndex] = None
                 frame_count = settings.frame_count
                 settings.last_frame_sent = frame_count
             if image is None:
