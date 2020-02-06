@@ -11,7 +11,7 @@ $ git push resin master
 ```
 It should take a few minutes for the code to push. While you wait, lets enable device URLs so we can see the server outside of our local network. This option can be toggled on the device summary page, pictured below or in the `Actions` tab in your device dashboards.
 
-Then in your browser you should be able to open the device URL and see a simple webpage with a the output form the Boson 320.
+Then in your browser you should be able to open the device URL and see a simple webpage with a the output from the Boson 320.
 
 [resin-link]:https://resin.io/
 [signup-page]:https://dashboard.resin.io/signup
